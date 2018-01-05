@@ -33,4 +33,35 @@ for(i in 1:n){
 }
 SpHist(as.data.frame(ICCs.Rand)$ICCs.Rand)
 
-#Weekend binger
+#Simulate Weekend binger (otherwise abstinent)
+n <- 1000
+ICCs.Binge <- rep(NA,n)
+for(i in 1:n){
+  ICCs.Binge[i] <- icc(t(matrix(c(rep(0,5),sample(4:10,2,replace=T),
+                                 rep(0,5),sample(4:10,2,replace=T),
+                                 rep(0,5),sample(4:10,2,replace=T),
+                                 rep(0,5),sample(4:10,2,replace=T)), nrow=4, byrow=T)),
+                      type="agreement", unit="single")$value
+}
+SpHist(as.data.frame(ICCs.Binge)$ICCs.Binge)
+
+
+#Simulate Realistic
+#Weekend between 2-10, otherwise 0-2 drinks per weekday, 50%-0, 25%-1, 25%-2
+n <- 5000
+ICCs.Realistic <- rep(NA,n)
+for(i in 1:n){
+  RealVector <- c(runif(5,0,1),sample(2:10,2,replace=T),
+                        runif(5,0,1),sample(2:10,2,replace=T),
+                        runif(5,0,1),sample(2:10,2,replace=T),
+                        runif(5,0,1),sample(2:10,2,replace=T))
+  RealVector <- ifelse(RealVector<=0.5,0,
+                       ifelse(RealVector<=0.75,1,
+                              ifelse(RealVector<=1,2,RealVector)))
+  Realistic <- matrix(RealVector, nrow=4, byrow=T)
+  
+  ICCs.Realistic[i] <- icc(t(Realistic),
+                       type="agreement", unit="single")$value
+}
+SpHist(as.data.frame(ICCs.Realistic)$ICCs.Realistic)
+
