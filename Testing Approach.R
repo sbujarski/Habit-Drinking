@@ -19,7 +19,7 @@ PerfectHabit <- matrix(c(0,	2,	0,	0,	9,	5,	8, #week1
                          0,	2,	0,	0,	9,	5,	8, #week3
                          0,	2,	0,	0,	9,	5,	8), nrow=4, byrow=T)#week4
 
-icc(t(PerfectHabit),type="agreement", unit="single")
+icc(t(PerfectHabit),type="agreement", model="twoway", unit="single")
 
 Random <- matrix(sample(0:10, 28, replace=T), nrow=4, byrow=T)
 
@@ -78,9 +78,18 @@ SampleData$HabitICC <- NA
 #Use ATLFB_2 through ATLFB_29
 vars <- paste("ATLFB_", 2:29, sep="")
 for(i in 1:dim(SampleData)[1]){
+  #need to force data to be type double
   ATLFB.byWks <- matrix(as.double(SampleData[i,vars]), nrow=4, byrow=T)
   
   SampleData$HabitICC[i] <- icc(t(ATLFB.byWks), type="agreement", unit="single")$value
 }
+
+#Less Habitual than I would have thought
 SpDesc(SampleData$HabitICC)
 SpHist(SampleData, variable="HabitICC")
+
+#Inspect those who are low ICC
+View(subset(SampleData, HabitICC < 0))
+#Rownumber: 2,10,58
+matrix(as.double(SampleData[2,vars]), nrow=4, byrow=T)
+icc(t(matrix(as.double(SampleData[2,vars]), nrow=4, byrow=T)), model="twoway", type="agreement", unit="single")
