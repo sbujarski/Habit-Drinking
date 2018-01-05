@@ -108,6 +108,8 @@ matrix(as.double(SampleData[92,vars]), nrow=4, byrow=T)
 icc(t(matrix(as.double(SampleData[92,vars]), nrow=4, byrow=T)), model="twoway", type="agreement", unit="single")
 
 #Yes all these people are very inconsistent drinkers. 
+#Seems to work well
+
 
 
 
