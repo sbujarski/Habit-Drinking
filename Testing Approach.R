@@ -111,5 +111,14 @@ icc(t(matrix(as.double(SampleData[92,vars]), nrow=4, byrow=T)), model="twoway", 
 #Seems to work well
 
 
+#Testing whether Age or sex is related to HabitICC
+summary(lm(HabitICC~Age, data=SampleData))
+ggplot(SampleData, aes(x=Age, y=HabitICC)) + geom_point() + stat_smooth(method="lm") + SpTheme()
+
+t.test(HabitICC~Female, data=SampleData)
+ggplot(SampleData, aes(x=Female, y=HabitICC)) + geom_point(position = position_jitter(w = 0.05, h = 0)) + stat_smooth(method="lm") + SpTheme()
+
+
+
 
 
