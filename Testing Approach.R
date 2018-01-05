@@ -23,13 +23,13 @@ icc(t(PerfectHabit),type="agreement", model="twoway", unit="single")
 
 Random <- matrix(sample(0:10, 28, replace=T), nrow=4, byrow=T)
 
-icc(t(Random),type="agreement", unit="single")
+icc(t(Random),type="agreement", model="twoway", unit="single")
 
 #simulate with random to see distribution
 n <- 1000
 ICCs.Rand <- rep(NA,n)
 for(i in 1:n){
-  ICCs.Rand[i] <- icc(t(matrix(sample(0:10, 28, replace=T), nrow=4, byrow=T)),type="agreement", unit="single")$value
+  ICCs.Rand[i] <- icc(t(matrix(sample(0:10, 28, replace=T), nrow=4, byrow=T)), type="agreement", model="twoway", unit="single")$value
 }
 SpHist(as.data.frame(ICCs.Rand)$ICCs.Rand)
 
@@ -41,14 +41,14 @@ for(i in 1:n){
                                  rep(0,5),sample(4:10,2,replace=T),
                                  rep(0,5),sample(4:10,2,replace=T),
                                  rep(0,5),sample(4:10,2,replace=T)), nrow=4, byrow=T)),
-                      type="agreement", unit="single")$value
+                      type="agreement", model="twoway", unit="single")$value
 }
 SpHist(as.data.frame(ICCs.Binge)$ICCs.Binge)
 
 
 #Simulate Realistic
 #Weekend between 2-10, otherwise 0-2 drinks per weekday, 50%-0, 25%-1, 25%-2
-n <- 5000
+n <- 1000
 ICCs.Realistic <- rep(NA,n)
 for(i in 1:n){
   RealVector <- c(runif(5,0,1),sample(2:10,2,replace=T),
@@ -61,7 +61,7 @@ for(i in 1:n){
   Realistic <- matrix(RealVector, nrow=4, byrow=T)
   
   ICCs.Realistic[i] <- icc(t(Realistic),
-                       type="agreement", unit="single")$value
+                       type="agreement", model="twoway", unit="single")$value
 }
 SpHist(as.data.frame(ICCs.Realistic)$ICCs.Realistic)
 
@@ -81,7 +81,7 @@ for(i in 1:dim(SampleData)[1]){
   #need to force data to be type double
   ATLFB.byWks <- matrix(as.double(SampleData[i,vars]), nrow=4, byrow=T)
   
-  SampleData$HabitICC[i] <- icc(t(ATLFB.byWks), type="agreement", unit="single")$value
+  SampleData$HabitICC[i] <- icc(t(ATLFB.byWks), type="agreement", model="twoway", unit="single")$value
 }
 
 #Less Habitual than I would have thought
@@ -89,7 +89,7 @@ SpDesc(SampleData$HabitICC)
 SpHist(SampleData, variable="HabitICC")
 
 #Inspect those who are low ICC
-View(subset(SampleData, HabitICC < 0))
-#Rownumber: 2,10,58
-matrix(as.double(SampleData[2,vars]), nrow=4, byrow=T)
-icc(t(matrix(as.double(SampleData[2,vars]), nrow=4, byrow=T)), model="twoway", type="agreement", unit="single")
+matrix(SampleData$HabitICC< -0.2)
+#Rownumber: 42, 50, 52, 92
+matrix(as.double(SampleData[42,vars]), nrow=4, byrow=T)
+icc(t(matrix(as.double(SampleData[42,vars]), nrow=4, byrow=T)), model="twoway", type="agreement", unit="single")
