@@ -65,3 +65,22 @@ for(i in 1:n){
 }
 SpHist(as.data.frame(ICCs.Realistic)$ICCs.Realistic)
 
+
+
+#Test with real data from previous study
+SampleData<-read.csv("SampleData.csv")
+SpDesc(SampleData)
+
+
+#Compute ICC of "Habitualness" for each submect
+SampleData$HabitICC <- NA
+
+#Use ATLFB_2 through ATLFB_29
+vars <- paste("ATLFB_", 2:29, sep="")
+for(i in 1:dim(SampleData)[1]){
+  ATLFB.byWks <- matrix(as.double(SampleData[i,vars]), nrow=4, byrow=T)
+  
+  SampleData$HabitICC[i] <- icc(t(ATLFB.byWks), type="agreement", unit="single")$value
+}
+SpDesc(SampleData$HabitICC)
+SpHist(SampleData, variable="HabitICC")
