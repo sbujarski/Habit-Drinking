@@ -91,5 +91,23 @@ SpHist(SampleData, variable="HabitICC")
 #Inspect those who are low ICC
 matrix(SampleData$HabitICC< -0.2)
 #Rownumber: 42, 50, 52, 92
+#42
 matrix(as.double(SampleData[42,vars]), nrow=4, byrow=T)
 icc(t(matrix(as.double(SampleData[42,vars]), nrow=4, byrow=T)), model="twoway", type="agreement", unit="single")
+
+#50
+matrix(as.double(SampleData[50,vars]), nrow=4, byrow=T)
+icc(t(matrix(as.double(SampleData[50,vars]), nrow=4, byrow=T)), model="twoway", type="agreement", unit="single")
+
+#52
+matrix(as.double(SampleData[52,vars]), nrow=4, byrow=T)
+icc(t(matrix(as.double(SampleData[52,vars]), nrow=4, byrow=T)), model="twoway", type="agreement", unit="single")
+
+#92
+matrix(as.double(SampleData[92,vars]), nrow=4, byrow=T)
+icc(t(matrix(as.double(SampleData[92,vars]), nrow=4, byrow=T)), model="twoway", type="agreement", unit="single")
+
+#Yes all these people are very inconsistent drinkers. 
+
+
+
