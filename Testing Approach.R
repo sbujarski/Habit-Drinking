@@ -69,9 +69,13 @@ for(i in 1:n){
   #testing correlation between Total.Drinks and ICCs.Realistic
   Total.Drinks.Realistic[i] <- sum(RealVector)
 }
-SpHist(as.data.frame(ICCs.Realistic)$ICCs.Realistic)
-SpHist(as.data.frame(Total.Drinks.Realistic)$Total.Drinks.Realistic)
-cor.test(ICCs.Realistic, Total.Drinks.Realistic)
+
+Realistic <- data.frame(ICCs=ICCs.Realistic, Total.Drinks=Total.Drinks.Realistic)
+SpHist(Realistic, variable="ICCs")
+SpHist(Realistic, variable="Total.Drinks")
+
+cor.test(Realistic$ICCs, Realistic$Total.Drinks)
+ggplot(Realistic, aes(x=Total.Drinks, y=ICCs)) + geom_point() + stat_smooth(method="lm") + SpTheme()
 
 
 
