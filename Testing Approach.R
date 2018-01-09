@@ -4,7 +4,7 @@ library(SpPack)
 library(ggplot2)
 library(irr)
 
-#Sampledata
+#Singular sample subject testing----
 Habitual <- matrix(c(0,	2,	0,	0,	9,	2,	8, #week1
               2,	3,	0,	1,	10,	3,	5, #week2
               0,	0,	0,	0,	6,	5,	9, #week3
@@ -25,13 +25,15 @@ Random <- matrix(sample(0:10, 28, replace=T), nrow=4, byrow=T)
 
 icc(t(Random),type="agreement", model="twoway", unit="single")
 
-#simulate with random to see distribution
+#Monte-Carlo Simulation Testing
+#with random to see distribution
 n <- 1000
 ICCs.Rand <- rep(NA,n)
 for(i in 1:n){
   ICCs.Rand[i] <- icc(t(matrix(sample(0:10, 28, replace=T), nrow=4, byrow=T)), type="agreement", model="twoway", unit="single")$value
 }
 SpHist(as.data.frame(ICCs.Rand)$ICCs.Rand)
+
 
 #Simulate Weekend binger (otherwise abstinent)
 n <- 1000
@@ -50,11 +52,12 @@ SpHist(as.data.frame(ICCs.Binge)$ICCs.Binge)
 #Weekend between 2-10, otherwise 0-2 drinks per weekday, 50%-0, 25%-1, 25%-2
 n <- 1000
 ICCs.Realistic <- rep(NA,n)
+Total.Drinks.Realistic <- rep(NA,n)
 for(i in 1:n){
-  RealVector <- c(runif(5,0,1),sample(2:10,2,replace=T),
-                        runif(5,0,1),sample(2:10,2,replace=T),
-                        runif(5,0,1),sample(2:10,2,replace=T),
-                        runif(5,0,1),sample(2:10,2,replace=T))
+  RealVector <- c(runif(5,0,1),rnorm(2,5,2),
+                        runif(5,0,1),rnorm(2,5,2),
+                        runif(5,0,1),rnorm(2,5,2),
+                        runif(5,0,1),rnorm(2,5,2))
   RealVector <- ifelse(RealVector<=0.5,0,
                        ifelse(RealVector<=0.75,1,
                               ifelse(RealVector<=1,2,RealVector)))
@@ -62,8 +65,13 @@ for(i in 1:n){
   
   ICCs.Realistic[i] <- icc(t(Realistic),
                        type="agreement", model="twoway", unit="single")$value
+  
+  #testing correlation between Total.Drinks and ICCs.Realistic
+  Total.Drinks.Realistic[i] <- sum(RealVector)
 }
 SpHist(as.data.frame(ICCs.Realistic)$ICCs.Realistic)
+SpHist(as.data.frame(Total.Drinks.Realistic)$Total.Drinks.Realistic)
+cor.test(ICCs.Realistic, Total.Drinks.Realistic)
 
 
 
@@ -117,6 +125,14 @@ ggplot(SampleData, aes(x=Age, y=HabitICC)) + geom_point() + stat_smooth(method="
 
 t.test(HabitICC~Female, data=SampleData)
 ggplot(SampleData, aes(x=Female, y=HabitICC)) + geom_point(position = position_jitter(w = 0.05, h = 0)) + stat_smooth(method="lm") + SpTheme()
+
+#Adding in a control variable of total alcohol consumed
+
+vars <- paste("ATLFB_", 2:29, sep="")
+SampleData$Total.Drinks <- rowSums(SampleData[,vars])
+
+summary(lm(HabitICC~Total.Drinks, data=SampleData))
+ggplot(SampleData, aes(x=Total.Drinks, y=HabitICC)) + geom_point() + stat_smooth(method="lm") + SpTheme()
 
 
 
