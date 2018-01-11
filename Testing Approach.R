@@ -1,14 +1,16 @@
 #Testing Approach
 
+#"PATTERN DRINKING"
+
 library(SpPack)
 library(ggplot2)
 library(irr)
 
 #Singular sample subject testing----
 Habitual <- matrix(c(0,	2,	0,	0,	9,	2,	8, #week1
-              2,	3,	0,	1,	10,	3,	5, #week2
-              0,	0,	0,	0,	6,	5,	9, #week3
-              1,	5,	3,	0,	7,	5,	6), nrow=4, byrow=T)#week4
+                     2,	3,	0,	1,	10,	3,	5, #week2
+                     0,	0,	0,	0,	6,	5,	9, #week3
+                     1,	5,	3,	0,	7,	5,	6), nrow=4, byrow=T)#week4
 
 
 #icc ratings=nxm matrix 
@@ -137,6 +139,9 @@ SampleData$Total.Drinks <- rowSums(SampleData[,vars])
 
 summary(lm(HabitICC~Total.Drinks, data=SampleData))
 ggplot(SampleData, aes(x=Total.Drinks, y=HabitICC)) + geom_point() + stat_smooth(method="lm") + SpTheme()
+
+
+
 
 
 
