@@ -48,7 +48,10 @@ for(i in 1:n){
                                  rep(0,5),sample(4:10,2,replace=T)), nrow=4, byrow=T)),
                       type="agreement", model="twoway", unit="single")$value
 }
-SpHist(as.data.frame(ICCs.Binge)$ICCs.Binge)
+ICCs.Binge.plot <- SpHist(as.data.frame(ICCs.Binge)$ICCs.Binge)
+ICCs.Binge.plot <- ICCs.Binge.plot + ggtitle("Simulated ICC from Exclusive Weekend Binger 4:10")
+ICCs.Binge.plot
+ggsave(ICCs.Binge.plot, filename="ICCs.Binge.plot.png", height=5, width=7, dpi=200)
 
 
 #Simulate Realistic
