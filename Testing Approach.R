@@ -81,14 +81,23 @@ for(i in 1:n){
   
 }
 
-Realistic <- data.frame(ICCs=ICCs.Realistic, Total.Drinks=Total.Drinks.Realistic)
+Realistic <- data.frame(ICCs=ICCs.Realistic, Total.Drinks=Total.Drinks.Realistic, SD.Drinks=SD.Drinks.Realistic)
 
 ICCs.Realistic.plot <- SpHist(Realistic, variable="ICCs")
 ICCs.Realistic.plot <- ICCs.Realistic.plot + ggtitle("Simulated ICC from 'Realistic' Drinker")
 ICCs.Realistic.plot
 ggsave(ICCs.Realistic.plot, filename="ICCs.Realistic.plot.png", height=5, width=7, dpi=200)
 
-SpHist(Realistic, variable="Total.Drinks")
+SD.Realistic.plot <- SpHist(Realistic, variable="SD.Drinks")
+SD.Realistic.plot <- SD.Realistic.plot + ggtitle("Simulated SD Drinks from 'Realistic' Drinker")
+SD.Realistic.plot
+ggsave(SD.Realistic.plot, filename="SD.Realistic.plot.png", height=5, width=7, dpi=200)
+
+Total.Drinks.Realistic.plot <- SpHist(Realistic, variable="Total.Drinks")
+Total.Drinks.Realistic.plot <- Total.Drinks.Realistic.plot + ggtitle("Simulated ICC from 'Realistic' Drinker")
+Total.Drinks.Realistic.plot
+ggsave(Total.Drinks.Realistic.plot, filename="Total.Drinks.Realistic.plot.png", height=5, width=7, dpi=200)
+
 
 cor.test(Realistic$ICCs, Realistic$Total.Drinks)
 ggplot(Realistic, aes(x=Total.Drinks, y=ICCs)) + geom_point() + stat_smooth(method="lm") + SpTheme()
