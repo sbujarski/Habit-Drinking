@@ -94,13 +94,25 @@ SD.Realistic.plot
 ggsave(SD.Realistic.plot, filename="SD.Realistic.plot.png", height=5, width=7, dpi=200)
 
 Total.Drinks.Realistic.plot <- SpHist(Realistic, variable="Total.Drinks")
-Total.Drinks.Realistic.plot <- Total.Drinks.Realistic.plot + ggtitle("Simulated ICC from 'Realistic' Drinker")
+Total.Drinks.Realistic.plot <- Total.Drinks.Realistic.plot + ggtitle("Simulated Total Drinks from 'Realistic' Drinker")
 Total.Drinks.Realistic.plot
 ggsave(Total.Drinks.Realistic.plot, filename="Total.Drinks.Realistic.plot.png", height=5, width=7, dpi=200)
 
+#SD of drinks over 4 weeks does not capture the same thing as ICCs for pattern drinking
+cor.test(Realistic$ICCs, Realistic$SD.Drinks)
+#cor = 0.3863243
+ICCs.SD.Scatter.plot <- ggplot(Realistic, aes(x=ICCs, y=SD.Drinks)) + geom_point() + stat_smooth(method="lm") + 
+  ggtitle("Simulated Realistic ICCs and SD of Drinks") + SpTheme()
+ICCs.SD.Scatter.plot
+ggsave(ICCs.SD.Scatter.plot, filename="ICCs.SD.Scatter.plot.png", height=5, width=7, dpi=200)
 
+#Total drinks is just as correlated as SD.Drinks
 cor.test(Realistic$ICCs, Realistic$Total.Drinks)
-ggplot(Realistic, aes(x=Total.Drinks, y=ICCs)) + geom_point() + stat_smooth(method="lm") + SpTheme()
+#cor = 0.392298
+ICCs.Total.Scatter.plot <- ggplot(Realistic, aes(x=ICCs, y=Total.Drinks)) + geom_point() + stat_smooth(method="lm") + 
+  ggtitle("Simulated Realistic ICCs and Total Drinks") + SpTheme()
+ICCs.Total.Scatter.plot
+ggsave(ICCs.Total.Scatter.plot, filename="ICCs.Total.Scatter.plot.png", height=5, width=7, dpi=200)
 
 
 
