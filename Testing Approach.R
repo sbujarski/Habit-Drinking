@@ -76,11 +76,18 @@ for(i in 1:n){
   #testing correlation between Total.Drinks and ICCs.Realistic
   Total.Drinks.Realistic[i] <- sum(RealVector)
   
+  #testing correlation between SD.Drinks and ICCs.Realistic
+  SD.Drinks.Realistic[i] <- sd(RealVector)
   
 }
 
 Realistic <- data.frame(ICCs=ICCs.Realistic, Total.Drinks=Total.Drinks.Realistic)
-SpHist(Realistic, variable="ICCs")
+
+ICCs.Realistic.plot <- SpHist(Realistic, variable="ICCs")
+ICCs.Realistic.plot <- ICCs.Realistic.plot + ggtitle("Simulated ICC from 'Realistic' Drinker")
+ICCs.Realistic.plot
+ggsave(ICCs.Realistic.plot, filename="ICCs.Realistic.plot.png", height=5, width=7, dpi=200)
+
 SpHist(Realistic, variable="Total.Drinks")
 
 cor.test(Realistic$ICCs, Realistic$Total.Drinks)
