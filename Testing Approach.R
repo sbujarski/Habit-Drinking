@@ -34,8 +34,9 @@ ICCs.Rand <- rep(NA,n)
 for(i in 1:n){
   ICCs.Rand[i] <- icc(t(matrix(sample(0:10, 28, replace=T), nrow=4, byrow=T)), type="agreement", model="twoway", unit="single")$value
 }
-SpHist(as.data.frame(ICCs.Rand)$ICCs.Rand)
-
+ICCs.Rand.plot <- SpHist(as.data.frame(ICCs.Rand)$ICCs.Rand)
+ICCs.Rand.plot <- ICCs.Rand.plot + ggtitle("Simulated ICC from Random Drinking between 0 and 10")
+ggsave(ICCs.Rand.plot, filename="ICCs.Rand.plot.png", height=5, width=7, dpi=200)
 
 #Simulate Weekend binger (otherwise abstinent)
 n <- 1000
@@ -55,6 +56,7 @@ SpHist(as.data.frame(ICCs.Binge)$ICCs.Binge)
 n <- 1000
 ICCs.Realistic <- rep(NA,n)
 Total.Drinks.Realistic <- rep(NA,n)
+SD.Drinks.Realistic <- rep(NA,n)
 for(i in 1:n){
   RealVector <- c(runif(5,0,1),rnorm(2,5,2),
                         runif(5,0,1),rnorm(2,5,2),
@@ -70,6 +72,8 @@ for(i in 1:n){
   
   #testing correlation between Total.Drinks and ICCs.Realistic
   Total.Drinks.Realistic[i] <- sum(RealVector)
+  
+  
 }
 
 Realistic <- data.frame(ICCs=ICCs.Realistic, Total.Drinks=Total.Drinks.Realistic)
