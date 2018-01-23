@@ -168,7 +168,6 @@ t.test(HabitICC~Female, data=SampleData)
 ggplot(SampleData, aes(x=Female, y=HabitICC)) + geom_point(position = position_jitter(w = 0.05, h = 0)) + stat_smooth(method="lm") + SpTheme()
 
 #Adding in a control variable of total alcohol consumed
-
 vars <- paste("ATLFB_", 2:29, sep="")
 SampleData$Total.Drinks <- rowSums(SampleData[,vars])
 
@@ -176,6 +175,14 @@ summary(lm(HabitICC~Total.Drinks, data=SampleData))
 ggplot(SampleData, aes(x=Total.Drinks, y=HabitICC)) + geom_point() + stat_smooth(method="lm") + SpTheme()
 
 
+#Testing correlation with SD
+vars <- paste("ATLFB_", 2:29, sep="")
+for(i in 1:dim(SampleData)[1]){
+  SampleData$SD.Drinks[i] <- sd(SampleData[i,vars])
+}
+
+summary(lm(HabitICC~SD.Drinks, data=SampleData))
+ggplot(SampleData, aes(x=HabitICC, y=SD.Drinks)) + geom_point() + stat_smooth(method="lm") + SpTheme()
 
 
 
