@@ -121,7 +121,7 @@ SampleData<-read.csv("SampleData.csv")
 SpDesc(SampleData)
 
 
-#Compute ICC of "Habitualness" for each submect
+#Compute ICC of "Habitualness" for each subject
 SampleData$HabitICC <- NA
 
 #Use ATLFB_2 through ATLFB_29
